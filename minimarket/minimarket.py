@@ -12,6 +12,7 @@ minyak = Barang ("minyak", 20000)
 roti = Barang ("roti", 1000)
 pensil = Barang ("pensil", 500)
 sapu = Barang ("sapu", 15000)
+pensil = Barang ("pensil", 500)
 
 print("Beli barang")
 print("----------")
