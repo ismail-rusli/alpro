@@ -14,3 +14,5 @@ print("--------------------")
 berantem.print_pemenang()
 print("--------------------")
 
+print("Selesai")
+
