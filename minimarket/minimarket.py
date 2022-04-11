@@ -13,6 +13,7 @@ roti = Barang ("roti", 1000)
 pensil = Barang ("pensil", 500)
 sapu = Barang ("sapu", 15000)
 pensil = Barang ("pensil", 500)
+sandal = Barang ("sandal", 30000)
 
 print("Beli barang")
 print("----------")
