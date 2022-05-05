@@ -1,6 +1,3 @@
-from xml.dom.pulldom import PROCESSING_INSTRUCTION
-
-
 class Pion:
     def __init__(self, nama: str):
         self.nama = nama
