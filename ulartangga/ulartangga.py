@@ -1,4 +1,3 @@
-from regex import W
 from papan import Papan
 from pion import Pion
 import random
