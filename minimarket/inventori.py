@@ -3,7 +3,7 @@ class Inventori:
         self.inventori = {} # tipe data dictionary
 
     def tambah_inventori (self, barang, jumlah):
-        merk = barang.get_merk()
+        merk = barang.merk
         jumlah_awal = 0
 
         # cek apakah barang sudah ada di inventori
@@ -13,7 +13,7 @@ class Inventori:
         self.inventori[merk] = jumlah_awal + jumlah
 
     def kurangi_inventori (self, barang, jumlah):
-        merk = barang.get_merk()
+        merk = barang.merk
         jumlah_awal = 0
 
         # cek jumlah awal di inventori
