@@ -1,109 +1,114 @@
+import os
 from pasien import Pasien
+
+class MenuPasien:
+    def __init__ (self):
+        self.menu_pasien = ['1. Print data pasien', 
+                '2. Tambah data pasien', 
+                '3. Cari data pasien', 
+                '4. Hapus data pasien', 
+                '5. Edit data pasien', 
+                '6. Keluar']
+
+        self.run_menu()
+
+    def run_menu (self):
+        db_pasien = DbPasien()
+
+        while True:
+            os.system ('clear')
+            print ("Selamat datang di menu data pasien.")
+            print ("-----------------------------------")
+            for menu in self.menu_pasien:
+                print (menu)
+
+            pilihan = input ("Silakan pilih menu ")
+            if pilihan == '1':
+                db_pasien.print_semua_pasien ()
+            elif pilihan == '2':
+                nama = ''
+                while db_pasien.pasien_ada (nama) or nama == '':
+                    nama = input ("Nama pasien: ")
+                    if db_pasien.pasien_ada (nama):
+                        print ("Nama sudah terdaftar")
+
+                alamat = input ("Alamat: ")
+                umur = int (input ("Umur: "))
+                gender = input ("Jenis kelamin (L/P): ")
+                if gender == 'L' or 'l': gender = 1
+                elif gender == 'P' or 'p': gender = 0
+                db_pasien.tambah_data_pasien (nama = nama, alamat = alamat, umur = umur, gender = gender)
+            elif pilihan == '3':
+                nama = input ("Silakan masukkan nama pasien yang dicari: ")
+                pasien = db_pasien.cari_data_pasien_by_nama (nama)
+                if pasien == None:
+                    print ("Data pasien dengan nama", nama, "tidak ditemukan.")
+                else:
+                    pasien.print_data()
+            elif pilihan == '4':
+                db_pasien.print_semua_nama_pasien()
+                nama = input ("Silakan masukkan nama pasien yang akan dihapus datanya: ")
+                db_pasien.hapus_data_pasien_by_nama (nama)
+            elif pilihan == '5':
+                nama = input ("Silakan masukkan nama pasien yang akan diedit: ")
+                db_pasien.edit_data_pasien_by_nama (nama)
+            elif pilihan == '6':
+                return
+            else:
+                print ("Anda tidak memasukkan pilihan dengan benar")
+
+            input ("Tekan enter untuk melanjutkan")
 
 class DbPasien:
     def __init__ (self):
         self.db_pasien = []
-        self.menu_pasien = ['Print data pasien', 'Tambah data pasien', 'Cari data pasien', 'Hapus data pasien', 'Edit data pasien', 'Keluar']
 
-    def run_menu (self):
-        print ("Selamat datang di menu data pasien.")
-        print ("-----------------------------------")
-        pilihan = 1
-        while (pilihan != 6):
-            nomor = 1
-            for menu in self.menu_pasien:
-                print (nomor, menu)
-                nomor += 1
-            pilihan = int (input ("Silakan masukkan pilihan Anda: "))
-            if pilihan == 1:
-                print ("Anda memilih menu print data pasien.")
-                nama = input ("Silakan tuliskan nama pasiennya: ")
-                self.print_data_pasien_by_nama (nama)
-            elif pilihan == 2:
-                print ("Anda memilih menu tambah data pasien.")
-                print ("Silakan isi data pasien baru berikut.")
-                nama = input ("Nama: ")
-                sudah_ada = self.cari_data_pasien_by_nama (nama)
-                if sudah_ada != None:
-                    print ("Nama pasien sudah terdaftar di database.")
-                    return
-                alamat = input ("Alamat: ")
-                umur = int (input ("Umur: "))
-                jenis_kelamin = input ("Jenis kelamin (L/P): ")
-                jk = None
-                if jenis_kelamin == 'L' or 'l':
-                    jk = 1
-                elif jenis_kelamin == 'P' or 'p':
-                    jk = 0
-                nomor = len(self.db_pasien) + 1
-                pasien = Pasien (nomor = nomor, nama = nama, alamat = alamat, umur = umur, jenis_kelamin = jk)
-                self.tambah_data_pasien (pasien)
-            elif pilihan == 3:
-                print ("Anda memilih menu cari data pasien.")
-                nama = input ("Silakan masukkan nama pasien yang dicari: ")
-                pasien = self.cari_data_pasien_by_nama (nama)
-                if pasien == None:
-                    print ("Data pasien dengan nama", nama, "tidak ditemukan.")
-                else:
-                    self.print_data_pasien_by_nama (nama)
-            elif pilihan == 4:
-                print ("Anda memilih menu hapus data pasien.")
-                nama = input ("Silakan masukkan nama pasien yang akan dihapus datanya: ")
-                self.hapus_data_pasien_by_nama (nama)
-            elif pilihan == 5:
-                print ("Anda memilih menu edit data pasien.")
-                nama = input ("Silakan masukkan nama pasien yang akan diedit: ")
-                self.edit_data_pasien_by_nama (nama)
-            elif pilihan == 6:
-                print ("Anda keluar dari menu data pasien. Terima kasih.")
-            else:
-                print ("Anda tidak memasukkan pilihan dengan benar")
-
-            print ("")
-
-    def print_data_pasien_by_nama (self, nama: str):
+    def print_semua_pasien (self):
         for pasien in self.db_pasien:
-            if pasien.get_nama() == nama:
-                print ("Berikut adalah data pasien:")
-                print ("Nama:", pasien.get_nama())
-                print ("Umur:", pasien.get_umur())
-                print ("Alamat:", pasien.get_alamat())
-                if pasien.get_jenis_kelamin() == 1:
-                    print ("Jenis kelamin: laki-laki")
-                elif pasien.get_jenis_kelamin() == 0:
-                    print ("Jenis kelamin: perempuan")
-                else:
-                    print ("Data jenis kelamin tidak tersedia.")
-                return
+            pasien.print_data()
 
-        print ("Data pasien tidak ditemukan.")
+    def print_semua_nama_pasien (self):
+        print ("== Daftar nama pasien ==")
+        for pasien in self.db_pasien:
+            print (pasien.nama)
 
-    def tambah_data_pasien (self, pasien: Pasien):
-        if pasien in self.db_pasien:
-            print ("Pasien sudah ada dalam database.")
-        else:
-            self.db_pasien.append (pasien)
-            print ("Pasien dengan nama", pasien.get_nama(), "berhasil disimpan.")
+        print ("")
+
 
     def cari_data_pasien_by_nama (self, nama: str):
         for pasien in self.db_pasien:
-            if pasien.get_nama() == nama:
+            if pasien.nama == nama:
                 return pasien
 
-        return None
+    def tambah_data_pasien (self, nama, alamat, umur, gender):
+        daftar_nama = [pasien.nama for pasien in self.db_pasien]
+        if nama in daftar_nama:
+            print ("Pasien sudah ada dalam database.")
+        else:
+            nomor = len(self.db_pasien) + 1
+            pasien = Pasien (nomor, nama, alamat, umur, gender)
+            self.db_pasien.append (pasien)
+            print ("Pasien dengan nama", pasien.nama, "berhasil disimpan.")
+
+    def pasien_ada (self, nama: str):
+        daftar_nama = [pasien.nama for pasien in self.db_pasien]
+        if nama in daftar_nama:
+            return True
+
+        return False
 
     def hapus_data_pasien_by_nama (self, nama: str):
         for pasien in self.db_pasien:
-            if pasien.get_nama() == nama:
+            if pasien.nama == nama:
                 self.db_pasien.remove (pasien)
-                print("Data pasien dengan nama", pasien.get_nama(), "telah dihapus.")
-                break # break untuk keluar dari loop karena nama pasien sudah ditemukan
+                print("Data pasien dengan nama", pasien.nama, "telah dihapus.")
+                return
 
         print ("Pasien dengan nama", nama, "tidak terdaftar dalam database.")
 
     def edit_data_pasien_by_nama (self, nama: str):
         for pasien in self.db_pasien:
-            if pasien.get_nama() == nama:
+            if pasien.nama == nama:
                 print ("Pasien dengan nama", nama, "ditemukan.")
                 edit = True
                 while (edit):
@@ -111,26 +116,26 @@ class DbPasien:
                     print ("1. Nama")
                     print ("2. Alamat")
                     print ("3. Umur")
-                    print ("4. Jenis kelamin")
+                    print ("4. Gender")
                     pilih = input ("Silakan pilih (1/2/3/4): ")
                     if pilih == '1':
                         nama_baru = input ("Silakan masukan nama baru pasien: ")
-                        pasien.set_nama (nama_baru)
+                        pasien.nama = nama_baru
                     elif pilih == '2':
                         alamat_baru = input ("Silakan masukan alamat baru pasien: ")
-                        pasien.set_alamat (alamat_baru)
+                        pasien.alamat = alamat_baru
                     elif pilih == '3':
                         umur_baru = input ("Silakan masukan umur baru pasien: ")
-                        pasien.set_umur (umur_baru)
+                        pasien.umur = umur_baru
                     elif pilih == '4':
-                        jk = input ("Jenis kelamin pasien (L/P): ")
-                        if jk == 'L':
-                            pasien.set_jenis_kelamin (True)
-                        elif jk == 'P':
-                            pasien.set_jenis_kelamin (False)
+                        gender = input ("Gender pasien (L/P): ")
+                        if gender == 'L' or gender == 'l':
+                            pasien.gender = 1
+                        elif gender == 'P' or gender == 'p':
+                            pasien.gender = 0
                         else:
                             print ("Anda tidak memasukkan data dengan benar.")
-                            print ("Jenis kelamin pasien tidak berubah.")
+                            print ("Gender pasien tidak berubah.")
                     else:
                         print ("Anda tidak memasukkan pilihan dengan benar.")
                         print ("Data pasien tidak berubah.")
@@ -139,9 +144,9 @@ class DbPasien:
                     if masih_edit == 'T' or masih_edit == 't':
                         edit = False
                         print ("Edit data pasien selesai.")
-                        self.print_data_pasien_by_nama (pasien.get_nama())
+                        pasien.print_data()
                     elif masih_edit == 'Y' or masih_edit == 'y':
-                        pass
+                        continue
                     else:
                         edit = False
                         print ("Anda tidak memasukkan pilihan dengan benar.")

@@ -1,17 +1,14 @@
+import os
 from pasien import Pasien
 from dokter import Dokter
 from penyakit import Penyakit
 from medrecord import MedicalRecord
-from database_pasien import DbPasien
+from database_pasien import DbPasien, MenuPasien
 
-
-db_pasien = DbPasien()
-run = True
-
-print ("Selamat datang di aplikasi Rumah Sakit.")
-print ("--------------------------------------")
-
-while (run):
+while True:
+    os.system ('clear')
+    print ("Selamat datang di aplikasi Rumah Sakit.")
+    print ("--------------------------------------")
     print ("Silakan pilih menu berikut.")
     print ("1. Kelola data pasien")
     print ("2. Kelola data dokter")
@@ -20,15 +17,17 @@ while (run):
     pilihan = input ("Silakan masukkan pilihan Anda (1/2/3/4): ")
     print ("")
     if pilihan == '1':
-        db_pasien.run_menu()
+        menu_pasien = MenuPasien()
+        continue
     elif pilihan == '2':
         print ("Menu ini belum diimplementasikan.")
     elif pilihan == '3':
         print ("Menu ini belum diimplementasikan.")
     elif pilihan == '4':
         print ("Terima kasih")
-        run = False
+        break
     else:
         print ("Anda tidak memasukkan pilihan dengan benar.")
-    print ("")
+
+    input ("Tekan enter untuk melanjutkan")
 
