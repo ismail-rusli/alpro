@@ -1,7 +1,6 @@
 import os
 from petarung import *
 from pertandingan import Pertandingan
-from utils import *
 from menu import Menu
 
 namafile = "data/db_petarung.txt"
