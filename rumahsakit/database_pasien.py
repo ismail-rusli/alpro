@@ -35,8 +35,8 @@ class MenuPasien:
                 alamat = input ("Alamat: ")
                 umur = int (input ("Umur: "))
                 gender = input ("Jenis kelamin (L/P): ")
-                if gender == 'L' or 'l': gender = 1
-                elif gender == 'P' or 'p': gender = 0
+                if gender == 'L' or gender == 'l': gender = 1
+                elif gender == 'P' or gender == 'p': gender = 0
                 db_pasien.tambah_data_pasien (nama = nama, alamat = alamat, umur = umur, gender = gender)
             elif pilihan == '3':
                 nama = input ("Silakan masukkan nama pasien yang dicari: ")
